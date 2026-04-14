@@ -1,0 +1,100 @@
+<view class="container">
+  <view class="date-bar">
+    <button class="date-btn" size="mini" data-offset="-1" bindtap="onDateShift">前一天</button>
+    <picker mode="date" value="{{date}}" bindchange="onDateChange">
+      <view class="date-text">{{displayDate}}</view>
+    </picker>
+    <button class="date-btn" size="mini" data-offset="1" bindtap="onDateShift">后一天</button>
+  </view>
+
+  <module-card
+    wx:for="{{cards}}"
+    wx:key="keyName"
+    key-name="{{item.keyName}}"
+    title="{{item.title}}"
+    completed="{{item.completed}}"
+    summary="{{item.summary}}"
+    bind:edit="onEditModule"
+  />
+
+  <bottom-sheet show="{{showSheet}}" title="{{currentModule === 'reading' ? '阅读打卡' : currentModule === 'workout' ? '运动打卡' : currentModule === 'sleep' ? '睡眠打卡' : '英语打卡'}}" bind:close="closeSheet">
+    <view wx:if="{{currentModule === 'reading'}}" class="form">
+      <view class="field">
+        <text class="label">阅读分钟</text>
+        <view class="quick-row">
+          <text wx:for="{{readingMinutesOpts}}" wx:key="*this" class="chip {{form.minutes == item ? 'chip-active' : ''}}" data-value="{{item}}" bindtap="onQuickMinutes">{{item}}</text>
+        </view>
+        <input class="input" type="number" value="{{form.minutes}}" data-field="minutes" bindinput="onInput" placeholder="自定义 1-600" />
+      </view>
+      <view class="field">
+        <text class="label">书名</text>
+        <input class="input" value="{{form.book}}" data-field="book" bindinput="onInput" placeholder="请输入书名" />
+      </view>
+      <view class="field">
+        <text class="label">备注（可选）</text>
+        <textarea class="textarea" value="{{form.note}}" data-field="note" bindinput="onInput" />
+      </view>
+    </view>
+
+    <view wx:if="{{currentModule === 'workout'}}" class="form">
+      <view class="field">
+        <text class="label">运动类型</text>
+        <picker mode="selector" range="{{workoutTypes}}" bindchange="onWorkoutTypeChange">
+          <view class="input">{{form.type}}</view>
+        </picker>
+        <input wx:if="{{form.type === '其他'}}" class="input" value="{{form.otherType}}" data-field="otherType" bindinput="onInput" placeholder="请输入其他运动" />
+      </view>
+      <view class="field">
+        <text class="label">运动分钟</text>
+        <view class="quick-row">
+          <text wx:for="{{workoutMinutesOpts}}" wx:key="*this" class="chip {{form.minutes == item ? 'chip-active' : ''}}" data-value="{{item}}" bindtap="onQuickMinutes">{{item}}</text>
+        </view>
+        <input class="input" type="number" value="{{form.minutes}}" data-field="minutes" bindinput="onInput" placeholder="自定义 1-600" />
+      </view>
+      <view class="field">
+        <text class="label">备注（可选）</text>
+        <textarea class="textarea" value="{{form.note}}" data-field="note" bindinput="onInput" />
+      </view>
+    </view>
+
+    <view wx:if="{{currentModule === 'sleep'}}" class="form">
+      <view class="field">
+        <text class="label">入睡时间</text>
+        <picker mode="time" value="{{form.sleepTime}}" data-field="sleepTime" bindchange="onInput">
+          <view class="input">{{form.sleepTime}}</view>
+        </picker>
+      </view>
+      <view class="field">
+        <text class="label">起床时间</text>
+        <picker mode="time" value="{{form.wakeTime}}" data-field="wakeTime" bindchange="onInput">
+          <view class="input">{{form.wakeTime}}</view>
+        </picker>
+      </view>
+      <view class="tips">若起床时间小于入睡时间，自动按跨天计算</view>
+    </view>
+
+    <view wx:if="{{currentModule === 'english'}}" class="form">
+      <view class="field switch-field">
+        <text class="label">今日学习 Duolingo</text>
+        <switch checked="{{form.duolingoStudied}}" data-field="duolingoStudied" bindchange="onSwitchChange" />
+      </view>
+      <view class="field switch-field {{!form.duolingoStudied ? 'disabled' : ''}}">
+        <text class="label">已完成并校验</text>
+        <switch checked="{{form.duolingoChecked}}" disabled="{{!form.duolingoStudied}}" data-field="duolingoChecked" bindchange="onSwitchChange" />
+      </view>
+      <view class="field">
+        <text class="label">学习分钟（可选）</text>
+        <view class="quick-row">
+          <text wx:for="{{englishMinutesOpts}}" wx:key="*this" class="chip {{form.minutes == item ? 'chip-active' : ''}}" data-value="{{item}}" bindtap="onQuickMinutes">{{item}}</text>
+        </view>
+        <input class="input" type="number" value="{{form.minutes}}" data-field="minutes" bindinput="onInput" placeholder="自定义 1-600" />
+      </view>
+      <view class="field">
+        <text class="label">备注（可选）</text>
+        <textarea class="textarea" value="{{form.note}}" data-field="note" bindinput="onInput" />
+      </view>
+    </view>
+
+    <button class="submit" bindtap="onSubmit">保存</button>
+  </bottom-sheet>
+</view>

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "每日打卡",
+  "usingComponents": {
+    "module-card": "/components/module-card/index",
+    "bottom-sheet": "/components/bottom-sheet/index"
+  }
+}

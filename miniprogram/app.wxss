@@ -1,0 +1,87 @@
+page {
+  --primary-color: #07c160;
+  --secondary-color: #1989fa;
+  --warning-color: #ff976a;
+  --error-color: #ee0a24;
+  --exercise-color: #ff6b6b;
+  --reading-color: #4ecdc4;
+  --sleep-color: #95e1d3;
+  --english-color: #ffd93d;
+  --bg-color: #f7f8fa;
+  --card-bg: #ffffff;
+  background: var(--bg-color);
+  color: #1f2430;
+  font-size: 28rpx;
+  line-height: 1.5;
+}
+
+.page {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 24rpx;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 8rpx;
+  box-shadow: 0 8rpx 24rpx rgba(31, 36, 48, 0.06);
+  box-sizing: border-box;
+  padding: 28rpx;
+}
+
+.section-title {
+  color: #1f2430;
+  font-size: 34rpx;
+  font-weight: 700;
+  margin-bottom: 18rpx;
+}
+
+.muted {
+  color: #7a8190;
+}
+
+.primary-button {
+  background: var(--primary-color);
+  border-radius: 8rpx;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.ghost-button {
+  background: #eef8f2;
+  border-radius: 8rpx;
+  color: var(--primary-color);
+}
+
+.field {
+  margin-bottom: 24rpx;
+}
+
+.label {
+  color: #424957;
+  display: block;
+  font-size: 26rpx;
+  margin-bottom: 12rpx;
+}
+
+.input,
+.textarea,
+.picker-value {
+  background: #f2f4f7;
+  border-radius: 8rpx;
+  box-sizing: border-box;
+  min-height: 84rpx;
+  padding: 20rpx 22rpx;
+  width: 100%;
+}
+
+.textarea {
+  height: 180rpx;
+}
+
+.tag {
+  border-radius: 8rpx;
+  display: inline-flex;
+  font-size: 24rpx;
+  padding: 8rpx 14rpx;
+}

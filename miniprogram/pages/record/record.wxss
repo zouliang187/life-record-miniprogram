@@ -1,0 +1,152 @@
+.date-picker {
+  background: #ffffff;
+  border-radius: 8rpx;
+  box-shadow: 0 8rpx 24rpx rgba(31, 36, 48, 0.06);
+  color: #1f2430;
+  font-weight: 700;
+  margin-bottom: 20rpx;
+  padding: 22rpx 24rpx;
+}
+
+.tabs {
+  background: #ffffff;
+  border-radius: 8rpx;
+  display: flex;
+  margin-bottom: 24rpx;
+  padding: 8rpx;
+}
+
+.tab {
+  border-radius: 8rpx;
+  color: #7a8190;
+  flex: 1;
+  padding: 18rpx 0;
+  text-align: center;
+}
+
+.tab.active {
+  background: #e9f8ef;
+  color: #07c160;
+  font-weight: 700;
+}
+
+.form-card .input,
+.form-card .textarea {
+  margin-bottom: 18rpx;
+}
+
+.sub-panel {
+  background: #f7f8fa;
+  border-radius: 8rpx;
+  margin-bottom: 18rpx;
+  padding: 18rpx;
+}
+
+.duration-box {
+  background: #eef8f2;
+  border-radius: 8rpx;
+  color: #07c160;
+  font-weight: 700;
+  margin-bottom: 22rpx;
+  padding: 18rpx;
+}
+
+.duration-picker {
+  color: #07c160;
+  font-size: 34rpx;
+  font-weight: 800;
+  text-align: center;
+}
+
+.form-row {
+  align-items: center;
+  background: #f2f4f7;
+  border-radius: 8rpx;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18rpx;
+  min-height: 86rpx;
+  padding: 0 22rpx;
+}
+
+.form-row text {
+  color: #424957;
+  flex-shrink: 0;
+  font-size: 27rpx;
+  font-weight: 600;
+  margin-right: 20rpx;
+}
+
+.form-row input {
+  color: #1f2430;
+  flex: 1;
+  font-size: 29rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  text-align: right;
+}
+
+.note-field {
+  margin-top: 4rpx;
+}
+
+.note-field text {
+  color: #424957;
+  display: block;
+  font-size: 27rpx;
+  font-weight: 600;
+  margin-bottom: 12rpx;
+}
+
+.stars {
+  display: flex;
+}
+
+.star {
+  color: #d7dbe3;
+  font-size: 46rpx;
+  margin-right: 12rpx;
+}
+
+.star-on {
+  color: #ffd93d;
+}
+
+.switch-row {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 22rpx;
+}
+
+.english-row {
+  align-items: center;
+  border-bottom: 1rpx solid #edf0f5;
+  display: flex;
+  min-height: 108rpx;
+}
+
+.english-row text {
+  flex: 1;
+  margin-left: 14rpx;
+}
+
+.english-row input {
+  background: #f2f4f7;
+  border-radius: 8rpx;
+  box-sizing: border-box;
+  font-size: 30rpx;
+  height: 68rpx;
+  line-height: 68rpx;
+  padding: 0 14rpx;
+  text-align: center;
+  width: 156rpx;
+}
+
+.submit-button {
+  font-size: 30rpx;
+  line-height: 2.8;
+  margin-top: 28rpx;
+  width: 100%;
+}

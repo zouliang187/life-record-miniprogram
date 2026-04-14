@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "read": true,
+    "write": true
+  },
+  "rules": {
+    "daily_records": {
+      ".read": "auth != null && doc.userId == auth.openid",
+      ".write": "auth != null && doc.userId == auth.openid"
+    }
+  }
+}

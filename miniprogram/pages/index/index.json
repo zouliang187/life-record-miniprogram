@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "生活记录助手",
+  "usingComponents": {
+    "record-card": "/components/record-card/index"
+  }
+}

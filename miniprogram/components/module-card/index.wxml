@@ -1,0 +1,8 @@
+<view class="card">
+  <view class="row">
+    <text class="title">{{title}}</text>
+    <text class="status {{completed ? 'done' : 'todo'}}">{{completed ? '已打卡' : '未打卡'}}</text>
+  </view>
+  <view class="summary">{{summary || '暂无记录'}}</view>
+  <button class="action" size="mini" bindtap="onTapAction">{{completed ? '编辑' : '打卡'}}</button>
+</view>

@@ -1,0 +1,140 @@
+.range-tabs {
+  background: #ffffff;
+  border-radius: 8rpx;
+  display: flex;
+  margin-bottom: 24rpx;
+  padding: 8rpx;
+}
+
+.range-tab {
+  border-radius: 8rpx;
+  color: #7a8190;
+  flex: 1;
+  padding: 18rpx 0;
+  text-align: center;
+}
+
+.range-tab.active {
+  background: #e9f8ef;
+  color: #07c160;
+  font-weight: 700;
+}
+
+.overview {
+  display: grid;
+  gap: 14rpx;
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 24rpx;
+}
+
+.overview-item {
+  background: #f7f8fa;
+  border-radius: 8rpx;
+  box-sizing: border-box;
+  min-height: 112rpx;
+  padding: 18rpx;
+}
+
+.overview-item:first-child {
+  grid-column: span 2;
+}
+
+.overview-title {
+  color: #7a8190;
+  font-size: 24rpx;
+  margin-bottom: 8rpx;
+}
+
+.overview-value {
+  color: #1f2430;
+  font-size: 34rpx;
+  font-weight: 800;
+}
+
+.heatmap-card {
+  margin-bottom: 24rpx;
+}
+
+.heatmap {
+  display: grid;
+  gap: 12rpx;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.week-header {
+  color: #7a8190;
+  display: grid;
+  font-size: 22rpx;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 10rpx;
+  text-align: center;
+}
+
+.heat-cell {
+  align-items: center;
+  background: #edf0f5;
+  border-radius: 8rpx;
+  box-sizing: border-box;
+  color: #7a8190;
+  display: flex;
+  flex-direction: column;
+  font-size: 20rpx;
+  height: 86rpx;
+  justify-content: center;
+}
+
+.blank-cell {
+  background: transparent;
+}
+
+.level-1 {
+  background: #e8f3ff;
+  color: #1989fa;
+}
+
+.level-2 {
+  background: #e9f8ef;
+  color: #07c160;
+}
+
+.level-3 {
+  background: #fff6df;
+  color: #d69200;
+}
+
+.level-4 {
+  background: #fff0ec;
+  color: #ff6b6b;
+}
+
+.month-record {
+  background: #fff0ec;
+  color: #ff6b6b;
+}
+
+.scroll-chart-card {
+  background: #ffffff;
+  border-radius: 8rpx;
+  box-shadow: 0 8rpx 24rpx rgba(31, 36, 48, 0.06);
+  box-sizing: border-box;
+  margin-bottom: 24rpx;
+  padding: 22rpx 0 22rpx 22rpx;
+}
+
+.scroll-chart-title {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8rpx;
+  padding-right: 22rpx;
+}
+
+.scroll-chart-title text:first-child {
+  color: #1f2430;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.chart-scroll {
+  width: 100%;
+}

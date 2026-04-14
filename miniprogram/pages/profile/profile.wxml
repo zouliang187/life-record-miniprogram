@@ -1,0 +1,70 @@
+<view class="page profile-page">
+  <view class="card profile-card">
+    <view class="section-title">个人信息</view>
+    <view class="avatar-row">
+      <image wx:if="{{profile.userInfo.avatarUrl}}" class="avatar" src="{{profile.userInfo.avatarUrl}}" mode="aspectFill" />
+      <view wx:else class="avatar placeholder">头像</view>
+      <button class="ghost-button avatar-btn" bindtap="onChooseAvatar">选择头像</button>
+    </view>
+    <view class="profile-row">
+      <text>昵称</text>
+      <input value="{{profile.userInfo.nickname}}" data-path="profile.userInfo.nickname" bindinput="onInput" placeholder="请输入昵称" />
+    </view>
+    <view class="profile-row">
+      <text>身高（cm）</text>
+      <input type="number" value="{{profile.userInfo.height}}" data-path="profile.userInfo.height" bindinput="onInput" placeholder="0" />
+    </view>
+    <view class="profile-row">
+      <text>体重（kg）</text>
+      <input type="digit" value="{{profile.userInfo.weight}}" data-path="profile.userInfo.weight" bindinput="onInput" placeholder="0" />
+    </view>
+    <view class="bmi-box {{bmiInfo.className}}">
+      <view>
+        <text>BMI：</text>
+        <text class="bmi-value">{{profile.userInfo.bmi || '待计算'}}</text>
+      </view>
+      <view class="bmi-status">{{bmiInfo.text}}</view>
+      <view class="bmi-range">{{bmiInfo.rangeText}}</view>
+    </view>
+    <picker mode="date" value="{{profile.userInfo.birthDate}}" data-path="profile.userInfo.birthDate" bindchange="onInput">
+      <view class="picker-value">出生日期：{{profile.userInfo.birthDate}}</view>
+    </picker>
+    <picker mode="selector" range="{{genders}}" value="{{genderIndex}}" bindchange="onGenderChange">
+      <view class="picker-value">性别：{{profile.userInfo.gender}}</view>
+    </picker>
+  </view>
+
+  <view class="card goal-card">
+    <view class="section-title">目标设置</view>
+    <view wx:for="{{goalCards}}" wx:key="type" class="goal-item">
+      <view class="goal-head">
+        <view class="goal-title">
+          <view class="goal-dot" style="background: {{item.color}}"></view>
+          <text>{{item.title}}</text>
+        </view>
+        <view class="goal-count">{{item.completedDays}}/{{item.targetDays}} 天</view>
+      </view>
+      <view class="goal-progress">
+        <view class="goal-progress-fill" style="width: {{item.percent}}%; background: {{item.color}}"></view>
+      </view>
+      <view class="goal-edit">
+        <text>目标天数</text>
+        <input type="number" value="{{item.targetDays}}" data-path="{{item.path}}" bindinput="onInput" />
+      </view>
+    </view>
+  </view>
+
+  <button class="primary-button action-button" bindtap="onSave">保存设置</button>
+  <button class="ghost-button action-button" bindtap="onExport">导出数据</button>
+  <button class="ghost-button action-button" bindtap="onAIAdvice">AI建议预留接口</button>
+
+  <view wx:if="{{exportPreview}}" class="card export-card">
+    <view class="section-title">导出预览</view>
+    <text>{{exportPreview}}...</text>
+  </view>
+
+  <view class="about card">
+    <view class="section-title">关于小程序</view>
+    <view class="muted">生活记录助手使用本地存储保存运动、阅读、睡眠和英语学习记录。数据不会上传云端，后续可扩展云同步、AI建议和成就系统。</view>
+  </view>
+</view>

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "数据统计",
+  "usingComponents": {
+    "stat-chart": "/components/stat-chart/index"
+  }
+}

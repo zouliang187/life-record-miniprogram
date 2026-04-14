@@ -1,0 +1,58 @@
+<view class="page stats-page">
+  <view class="range-tabs">
+    <view class="range-tab {{range === 'week' ? 'active' : ''}}" data-range="week" bindtap="onRangeTap">周视图</view>
+    <view class="range-tab {{range === 'month' ? 'active' : ''}}" data-range="month" bindtap="onRangeTap">月视图</view>
+  </view>
+
+  <view class="overview card">
+    <view wx:for="{{overviewCards}}" wx:key="title" class="overview-item">
+      <view class="overview-title">{{item.title}}</view>
+      <view class="overview-value" style="color: {{item.color}}">{{item.value}}</view>
+    </view>
+  </view>
+
+  <view class="card heatmap-card">
+    <view class="section-title">{{range === 'week' ? '本周打卡记录' : '本月完成情况'}}</view>
+    <view class="week-header">
+      <text wx:for="{{weekLabels}}" wx:key="*this">{{item}}</text>
+    </view>
+    <view class="heatmap">
+      <view
+        wx:for="{{calendarCells}}"
+        wx:key="date"
+        class="heat-cell level-{{item.completedCount}} {{item.monthRecord ? 'month-record' : ''}} {{item.isBlank ? 'blank-cell' : ''}}"
+      >
+        <block wx:if="{{!item.isBlank}}">
+          <text>{{range === 'week' ? item.dayLabel : item.dayText}}</text>
+          <text>{{item.completedCount}}/4</text>
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <block wx:if="{{range === 'week'}}">
+    <stat-chart title="每日完成率" bars="{{completionBars}}" width="{{chartWidth}}" />
+    <stat-chart title="总时长统计" bars="{{durationBars}}" width="{{chartWidth}}" />
+  </block>
+
+  <block wx:else>
+    <view class="scroll-chart-card">
+      <view class="scroll-chart-title">
+        <text>每日完成率</text>
+        <text class="muted">左右滑动查看本月</text>
+      </view>
+      <scroll-view scroll-x class="chart-scroll" enhanced show-scrollbar="{{false}}">
+        <stat-chart title="" bars="{{completionBars}}" width="{{chartWidth}}" />
+      </scroll-view>
+    </view>
+    <view class="scroll-chart-card">
+      <view class="scroll-chart-title">
+        <text>总时长统计</text>
+        <text class="muted">运动 + 阅读 + 学习</text>
+      </view>
+      <scroll-view scroll-x class="chart-scroll" enhanced show-scrollbar="{{false}}">
+        <stat-chart title="" bars="{{durationBars}}" width="{{chartWidth}}" />
+      </scroll-view>
+    </view>
+  </block>
+</view>

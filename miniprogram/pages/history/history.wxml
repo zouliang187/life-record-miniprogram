@@ -1,0 +1,48 @@
+<view class="page history-page">
+  <view class="calendar-card card">
+    <view class="month-header">
+      <button class="ghost-button month-btn" data-offset="-1" bindtap="onMonthShift">上月</button>
+      <view>{{year}}年{{month}}月</view>
+      <button class="ghost-button month-btn" data-offset="1" bindtap="onMonthShift">下月</button>
+    </view>
+    <view class="week-row">
+      <text>日</text><text>一</text><text>二</text><text>三</text><text>四</text><text>五</text><text>六</text>
+    </view>
+    <view class="calendar-grid">
+      <view
+        wx:for="{{calendar}}"
+        wx:key="date"
+        class="day {{item.isBlank ? 'blank' : ''}} {{item.hasRecord ? 'has-record' : ''}} {{item.selected ? 'selected' : ''}}"
+        data-date="{{item.date}}"
+        bindtap="onDateTap"
+      >{{item.day}}</view>
+    </view>
+  </view>
+
+  <view class="card day-card">
+    <view class="section-title">{{selectedDate}} 记录</view>
+    <view wx:if="{{dayRecords.length === 0}}" class="empty">当天暂无记录</view>
+    <view wx:for="{{dayRecords}}" wx:key="type" class="record-line">• {{item.typeName}} {{item.summary}}</view>
+  </view>
+
+  <view class="filters">
+    <view
+      wx:for="{{filters}}"
+      wx:key="type"
+      class="filter {{filterType === item.type ? 'active' : ''}}"
+      data-type="{{item.type}}"
+      bindtap="onFilterTap"
+    >{{item.name}}</view>
+  </view>
+
+  <view class="card list-card">
+    <view class="section-title">记录列表</view>
+    <view wx:if="{{listRecords.length === 0}}" class="empty">暂无记录</view>
+    <view wx:for="{{listRecords}}" wx:key="timestamp" class="list-item">
+      <view>
+        <view class="list-title">{{item.date}} {{item.typeName}}</view>
+        <view class="muted">{{item.summary}}</view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,39 @@
+<view class="container">
+  <view class="range-tabs">
+    <view class="tab {{activeRange === 'week' ? 'active' : ''}}" data-range="week" bindtap="onSwitchRange">本周</view>
+    <view class="tab {{activeRange === 'month' ? 'active' : ''}}" data-range="month" bindtap="onSwitchRange">本月</view>
+  </view>
+
+  <view wx:if="{{stats}}" class="stats-wrap">
+    <view class="card">
+      <view class="title">阅读</view>
+      <view class="line">总分钟：{{stats.reading.totalMinutes}}</view>
+      <view class="line">完成天数：{{stats.reading.completedDays}} / {{stats.totalDays}}</view>
+      <view class="line">平均分钟/天：{{stats.reading.avgMinutesPerCompletedDay}}</view>
+      <view class="progress"><view class="progress-inner" style="width: {{stats.totalDays ? (stats.reading.completedDays * 100 / stats.totalDays) : 0}}%"></view></view>
+    </view>
+
+    <view class="card">
+      <view class="title">运动</view>
+      <view class="line">总分钟：{{stats.workout.totalMinutes}}</view>
+      <view class="line">完成天数：{{stats.workout.completedDays}} / {{stats.totalDays}}</view>
+      <view class="line">平均分钟/天：{{stats.workout.avgMinutesPerCompletedDay}}</view>
+      <view class="progress"><view class="progress-inner" style="width: {{stats.totalDays ? (stats.workout.completedDays * 100 / stats.totalDays) : 0}}%"></view></view>
+    </view>
+
+    <view class="card">
+      <view class="title">睡眠</view>
+      <view class="line">平均睡眠时长：{{stats.sleep.avgDurationMinutes}} 分钟</view>
+      <view class="line">记录天数：{{stats.sleep.recordDays}}</view>
+    </view>
+
+    <view class="card">
+      <view class="title">英语</view>
+      <view class="line">完成天数（校验通过）：{{stats.english.completedDays}}</view>
+      <view class="line">总天数：{{stats.totalDays}}</view>
+      <view class="progress"><view class="progress-inner" style="width: {{stats.totalDays ? (stats.english.completedDays * 100 / stats.totalDays) : 0}}%"></view></view>
+    </view>
+  </view>
+
+  <view wx:if="{{!loading && !stats}}" class="empty">暂无统计数据</view>
+</view>

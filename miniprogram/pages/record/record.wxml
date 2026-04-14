@@ -1,0 +1,131 @@
+<view class="page record-page">
+  <picker mode="date" value="{{date}}" bindchange="onDateChange">
+    <view class="date-picker">记录日期：{{date}}</view>
+  </picker>
+
+  <view class="tabs">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="type"
+      class="tab {{activeType === item.type ? 'active' : ''}}"
+      data-type="{{item.type}}"
+      bindtap="onTabTap"
+    >{{item.name}}</view>
+  </view>
+
+  <view wx:if="{{activeType === 'exercise'}}" class="card form-card">
+    <view class="section-title">运动记录</view>
+    <view class="field">
+      <text class="label">运动项目</text>
+      <picker mode="selector" range="{{projects}}" value="{{projectIndex}}" bindchange="onProjectChange">
+        <view class="picker-value">{{exerciseForm.project || '未选择'}}</view>
+      </picker>
+    </view>
+    <view wx:if="{{exerciseForm.project === '其他'}}" class="field">
+      <text class="label">自定义项目</text>
+      <input class="input" value="{{exerciseForm.customProject}}" data-path="exerciseForm.customProject" bindinput="onInput" placeholder="例如：羽毛球" />
+    </view>
+    <view class="field">
+      <text class="label">运动时长：{{exerciseForm.duration}}分钟</text>
+      <picker mode="selector" range="{{durationOptions}}" value="{{durationIndex}}" bindchange="onDurationChange">
+        <view class="picker-value duration-picker">{{exerciseForm.duration || 0}}分钟</view>
+      </picker>
+    </view>
+    <view wx:if="{{exerciseForm.project === '居家健身'}}" class="sub-panel">
+      <view class="form-row">
+        <text>俯卧撑次数</text>
+        <input type="number" value="{{exerciseForm.pushups}}" data-path="exerciseForm.pushups" bindinput="onInput" placeholder="0" />
+      </view>
+      <view class="form-row">
+        <text>深蹲次数</text>
+        <input type="number" value="{{exerciseForm.squats}}" data-path="exerciseForm.squats" bindinput="onInput" placeholder="0" />
+      </view>
+      <view class="form-row">
+        <text>平板支撑秒数</text>
+        <input type="number" value="{{exerciseForm.plank}}" data-path="exerciseForm.plank" bindinput="onInput" placeholder="0" />
+      </view>
+      <view class="form-row">
+        <text>吊杠秒数</text>
+        <input type="number" value="{{exerciseForm.hangBar}}" data-path="exerciseForm.hangBar" bindinput="onInput" placeholder="0" />
+      </view>
+      <view class="form-row">
+        <text>引体向上次数</text>
+        <input type="number" value="{{exerciseForm.pullups}}" data-path="exerciseForm.pullups" bindinput="onInput" placeholder="0" />
+      </view>
+      <view class="form-row">
+        <text>其他训练内容</text>
+        <input value="{{exerciseForm.otherDetail}}" data-path="exerciseForm.otherDetail" bindinput="onInput" placeholder="可选" />
+      </view>
+    </view>
+    <textarea class="textarea" value="{{exerciseForm.note}}" data-path="exerciseForm.note" bindinput="onInput" placeholder="备注（可选）" />
+  </view>
+
+  <view wx:if="{{activeType === 'reading'}}" class="card form-card">
+    <view class="section-title">阅读记录</view>
+    <view class="form-row">
+      <text>书籍名称</text>
+      <input value="{{readingForm.bookName}}" data-path="readingForm.bookName" bindinput="onInput" placeholder="请输入" />
+    </view>
+    <view class="form-row">
+      <text>阅读时长（分钟）</text>
+      <input type="number" value="{{readingForm.duration}}" data-path="readingForm.duration" bindinput="onInput" placeholder="0" />
+    </view>
+    <view class="form-row">
+      <text>当前页码</text>
+      <input type="number" value="{{readingForm.currentPage}}" data-path="readingForm.currentPage" bindinput="onInput" placeholder="0" />
+    </view>
+    <view class="form-row">
+      <text>总页数</text>
+      <input type="number" value="{{readingForm.totalPages}}" data-path="readingForm.totalPages" bindinput="onInput" placeholder="0" />
+    </view>
+    <view class="note-field">
+      <text>读书笔记</text>
+      <textarea class="textarea" value="{{readingForm.note}}" data-path="readingForm.note" bindinput="onInput" placeholder="可选" />
+    </view>
+  </view>
+
+  <view wx:if="{{activeType === 'sleep'}}" class="card form-card">
+    <view class="section-title">睡眠记录</view>
+    <view class="field">
+      <text class="label">入睡时间</text>
+      <picker mode="time" value="{{sleepForm.bedTime}}" data-path="sleepForm.bedTime" bindchange="onInput">
+        <view class="picker-value">{{sleepForm.bedTime}}</view>
+      </picker>
+    </view>
+    <view class="field">
+      <text class="label">起床时间</text>
+      <picker mode="time" value="{{sleepForm.wakeTime}}" data-path="sleepForm.wakeTime" bindchange="onInput">
+        <view class="picker-value">{{sleepForm.wakeTime}}</view>
+      </picker>
+    </view>
+    <view class="duration-box">睡眠时长：{{sleepDurationText}}</view>
+    <view class="field">
+      <text class="label">睡眠分数（运动手表）</text>
+      <input class="input" type="number" maxlength="3" value="{{sleepForm.watchScore}}" data-path="sleepForm.watchScore" bindinput="onInput" placeholder="请输入昨晚睡眠分数，如 86" />
+    </view>
+    <view class="field">
+      <text class="label">睡眠质量</text>
+      <view class="stars">
+        <text wx:for="{{stars}}" wx:key="*this" class="star {{sleepForm.quality >= item ? 'star-on' : ''}}" data-value="{{item}}" bindtap="onRateTap">★</text>
+      </view>
+    </view>
+    <view class="switch-row">
+      <text>是否午睡</text>
+      <switch checked="{{sleepForm.napEnabled}}" data-path="sleepForm.napEnabled" bindchange="onSwitchChange" />
+    </view>
+    <input wx:if="{{sleepForm.napEnabled}}" class="input" type="number" value="{{sleepForm.napDuration}}" data-path="sleepForm.napDuration" bindinput="onInput" placeholder="午睡时长（分钟）" />
+  </view>
+
+  <view wx:if="{{activeType === 'english'}}" class="card form-card">
+    <view class="section-title">英语学习记录</view>
+    <view class="english-row">
+      <checkbox checked="{{englishForm.dailyCompleted}}" color="#07c160" data-path="englishForm.dailyCompleted" bindtap="onCheckboxTap" />
+      <text>多邻国</text>
+      <input type="number" value="{{englishForm.dailyDuration}}" data-path="englishForm.dailyDuration" bindinput="onInput" />
+    </view>
+    <view class="duration-box">总学习时长：{{englishTotalDuration}}分钟</view>
+    <textarea class="textarea" value="{{englishForm.note}}" data-path="englishForm.note" bindinput="onInput" placeholder="学习内容（可选）" />
+  </view>
+
+  <button class="primary-button submit-button" bindtap="onSubmit">保存记录</button>
+</view>
