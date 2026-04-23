@@ -1,22 +1,75 @@
 <view class="page profile-page">
+  <view class="growth-hero card">
+    <view class="growth-top">
+      <view>
+        <view class="eyebrow">GROWTH SYSTEM</view>
+        <picker mode="selector" range="{{roles}}" value="{{roleIndex}}" bindchange="onRoleChange">
+          <view class="growth-title role-trigger">{{profile.userInfo.roleName || '自我管理者'}}</view>
+        </picker>
+        <view class="growth-subtitle">把运动、阅读、睡眠和学习，沉淀成长期复利。</view>
+      </view>
+      <image wx:if="{{profile.userInfo.avatarUrl}}" class="hero-avatar" src="{{profile.userInfo.avatarUrl}}" mode="aspectFill" bindtap="onChooseAvatar" />
+      <view wx:else class="hero-avatar placeholder" bindtap="onChooseAvatar">头像</view>
+    </view>
+    <view class="insight-strip">
+      <view class="insight-item">
+        <text class="insight-label">本月最佳</text>
+        <text class="insight-value">持续记录</text>
+      </view>
+      <view class="insight-item">
+        <text class="insight-label">AI建议</text>
+        <text class="insight-value">先稳住节奏</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="badge-panel">
+    <view class="badge-item">
+      <view class="badge-icon">7</view>
+      <view>
+        <view class="badge-title">7天连续</view>
+        <view class="badge-desc">建立节奏</view>
+      </view>
+    </view>
+    <view class="badge-item">
+      <view class="badge-icon muted-icon">30</view>
+      <view>
+        <view class="badge-title">30天稳定</view>
+        <view class="badge-desc">形成习惯</view>
+      </view>
+    </view>
+    <view class="badge-item">
+      <view class="badge-icon muted-icon">100</view>
+      <view>
+        <view class="badge-title">100天长期</view>
+        <view class="badge-desc">复利成长</view>
+      </view>
+    </view>
+  </view>
+
   <view class="card profile-card">
     <view class="section-title">个人信息</view>
-    <view class="avatar-row">
-      <image wx:if="{{profile.userInfo.avatarUrl}}" class="avatar" src="{{profile.userInfo.avatarUrl}}" mode="aspectFill" />
-      <view wx:else class="avatar placeholder">头像</view>
-      <button class="ghost-button avatar-btn" bindtap="onChooseAvatar">选择头像</button>
+    <view class="profile-grid">
+      <view class="profile-row half-row">
+        <text>昵称</text>
+        <input value="{{profile.userInfo.nickname}}" data-path="profile.userInfo.nickname" bindinput="onInput" placeholder="请输入昵称" />
+      </view>
+      <picker mode="selector" range="{{genders}}" value="{{genderIndex}}" bindchange="onGenderChange">
+        <view class="picker-value half-row">性别：{{profile.userInfo.gender}}</view>
+      </picker>
     </view>
-    <view class="profile-row">
-      <text>昵称</text>
-      <input value="{{profile.userInfo.nickname}}" data-path="profile.userInfo.nickname" bindinput="onInput" placeholder="请输入昵称" />
-    </view>
-    <view class="profile-row">
-      <text>身高（cm）</text>
-      <input type="number" value="{{profile.userInfo.height}}" data-path="profile.userInfo.height" bindinput="onInput" placeholder="0" />
-    </view>
-    <view class="profile-row">
-      <text>体重（kg）</text>
-      <input type="digit" value="{{profile.userInfo.weight}}" data-path="profile.userInfo.weight" bindinput="onInput" placeholder="0" />
+    <picker mode="date" value="{{profile.userInfo.birthDate}}" data-path="profile.userInfo.birthDate" bindchange="onInput">
+      <view class="picker-value">出生日期：{{profile.userInfo.birthDate}}</view>
+    </picker>
+    <view class="profile-grid">
+      <view class="profile-row half-row">
+        <text>身高（cm）</text>
+        <input type="number" value="{{profile.userInfo.height}}" data-path="profile.userInfo.height" bindinput="onInput" placeholder="0" />
+      </view>
+      <view class="profile-row half-row">
+        <text>体重（kg）</text>
+        <input type="digit" value="{{profile.userInfo.weight}}" data-path="profile.userInfo.weight" bindinput="onInput" placeholder="0" />
+      </view>
     </view>
     <view class="bmi-box {{bmiInfo.className}}">
       <view>
@@ -26,16 +79,10 @@
       <view class="bmi-status">{{bmiInfo.text}}</view>
       <view class="bmi-range">{{bmiInfo.rangeText}}</view>
     </view>
-    <picker mode="date" value="{{profile.userInfo.birthDate}}" data-path="profile.userInfo.birthDate" bindchange="onInput">
-      <view class="picker-value">出生日期：{{profile.userInfo.birthDate}}</view>
-    </picker>
-    <picker mode="selector" range="{{genders}}" value="{{genderIndex}}" bindchange="onGenderChange">
-      <view class="picker-value">性别：{{profile.userInfo.gender}}</view>
-    </picker>
   </view>
 
   <view class="card goal-card">
-    <view class="section-title">目标设置</view>
+    <view class="goal-section-title">目标设置</view>
     <view wx:for="{{goalCards}}" wx:key="type" class="goal-item">
       <view class="goal-head">
         <view class="goal-title">

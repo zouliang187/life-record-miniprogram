@@ -1,6 +1,6 @@
 <view class="record-card" style="border-left-color: {{color}}" bindtap="onTap">
   <view class="left">
-    <view class="icon" style="background: {{color}}">{{icon}}</view>
+    <view class="icon" style="border-color: {{color}}; color: {{color}}">{{icon}}</view>
     <view class="content">
       <view class="title">{{title}}</view>
       <view class="detail">{{detailText}}</view>

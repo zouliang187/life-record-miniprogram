@@ -10,12 +10,12 @@
     "navigationBarTitleText": "生活记录助手",
     "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#f7f8fa",
+    "backgroundColor": "#fbfaf7",
     "backgroundTextStyle": "light"
   },
   "tabBar": {
-    "color": "#7a8190",
-    "selectedColor": "#07c160",
+    "color": "#8d9a92",
+    "selectedColor": "#78a88b",
     "backgroundColor": "#ffffff",
     "borderStyle": "black",
     "list": [

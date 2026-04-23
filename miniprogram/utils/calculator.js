@@ -1,10 +1,10 @@
 const { addDays, formatDate, getMonthDates, getWeekDates } = require("./date");
 
 const MODULES = [
-  { type: "exercise", name: "运动", color: "#ff6b6b" },
-  { type: "reading", name: "阅读", color: "#4ecdc4" },
-  { type: "sleep", name: "睡眠", color: "#95e1d3" },
-  { type: "english", name: "英语", color: "#ffd93d" }
+  { type: "exercise", name: "运动", color: "#df8f83" },
+  { type: "reading", name: "阅读", color: "#73aaa3" },
+  { type: "sleep", name: "睡眠", color: "#8aaed0" },
+  { type: "english", name: "英语", color: "#d7b866" }
 ];
 
 /**

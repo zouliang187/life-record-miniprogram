@@ -1,56 +1,71 @@
 page {
-  --primary-color: #07c160;
-  --secondary-color: #1989fa;
-  --warning-color: #ff976a;
-  --error-color: #ee0a24;
-  --exercise-color: #ff6b6b;
-  --reading-color: #4ecdc4;
-  --sleep-color: #95e1d3;
-  --english-color: #ffd93d;
-  --bg-color: #f7f8fa;
-  --card-bg: #ffffff;
-  background: var(--bg-color);
-  color: #1f2430;
+  --accent: #78a88b;
+  --accent-soft: #eef7f1;
+  --blue-soft: #edf6ff;
+  --cream: #fff8ec;
+  --warm: #fff3ee;
+  --ink: #26312b;
+  --ink-2: #526158;
+  --muted: #8d9a92;
+  --line: rgba(80, 96, 86, 0.1);
+  --bg-color: #fbfaf7;
+  --card-bg: rgba(255, 255, 255, 0.92);
+  --surface: #ffffff;
+  --exercise-color: #df8f83;
+  --reading-color: #73aaa3;
+  --sleep-color: #8aaed0;
+  --english-color: #d7b866;
+  --body-color: #9e8fc5;
+  --shadow-soft: 0 18rpx 44rpx rgba(92, 106, 96, 0.1);
+  --shadow-subtle: 0 10rpx 26rpx rgba(92, 106, 96, 0.06);
+  background: linear-gradient(180deg, #fffdf8 0%, #fbfaf7 46%, #f3f7f1 100%);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
   font-size: 28rpx;
+  letter-spacing: 0;
   line-height: 1.5;
 }
 
 .page {
-  min-height: 100vh;
   box-sizing: border-box;
-  padding: 24rpx;
+  min-height: 100vh;
+  padding: 34rpx 34rpx 58rpx;
 }
 
 .card {
   background: var(--card-bg);
-  border-radius: 8rpx;
-  box-shadow: 0 8rpx 24rpx rgba(31, 36, 48, 0.06);
+  border: 1rpx solid rgba(105, 126, 113, 0.1);
+  border-radius: 16rpx;
+  box-shadow: var(--shadow-soft);
   box-sizing: border-box;
-  padding: 28rpx;
+  padding: 30rpx;
 }
 
 .section-title {
-  color: #1f2430;
+  color: var(--ink);
   font-size: 34rpx;
-  font-weight: 700;
-  margin-bottom: 18rpx;
+  font-weight: 800;
+  letter-spacing: 0;
+  margin: 34rpx 0 18rpx;
 }
 
 .muted {
-  color: #7a8190;
+  color: var(--muted);
 }
 
 .primary-button {
-  background: var(--primary-color);
-  border-radius: 8rpx;
+  background: linear-gradient(135deg, #78a88b 0%, #9ac8aa 100%);
+  border-radius: 16rpx;
+  box-shadow: 0 16rpx 34rpx rgba(120, 168, 139, 0.24);
   color: #ffffff;
   font-weight: 700;
 }
 
 .ghost-button {
-  background: #eef8f2;
-  border-radius: 8rpx;
-  color: var(--primary-color);
+  background: rgba(255, 255, 255, 0.74);
+  border: 1rpx solid rgba(105, 126, 113, 0.12);
+  border-radius: 16rpx;
+  color: var(--ink);
 }
 
 .field {
@@ -58,20 +73,22 @@ page {
 }
 
 .label {
-  color: #424957;
+  color: var(--muted);
   display: block;
-  font-size: 26rpx;
+  font-size: 24rpx;
+  font-weight: 600;
   margin-bottom: 12rpx;
 }
 
 .input,
 .textarea,
 .picker-value {
-  background: #f2f4f7;
-  border-radius: 8rpx;
+  background: #f4f5f6;
+  border: 1rpx solid rgba(105, 126, 113, 0.08);
+  border-radius: 16rpx;
   box-sizing: border-box;
-  min-height: 84rpx;
-  padding: 20rpx 22rpx;
+  min-height: 88rpx;
+  padding: 22rpx 24rpx;
   width: 100%;
 }
 
@@ -80,8 +97,10 @@ page {
 }
 
 .tag {
-  border-radius: 8rpx;
+  background: #f3f4f6;
+  border-radius: 16rpx;
+  color: var(--ink-2);
   display: inline-flex;
-  font-size: 24rpx;
-  padding: 8rpx 14rpx;
+  font-size: 23rpx;
+  padding: 8rpx 16rpx;
 }

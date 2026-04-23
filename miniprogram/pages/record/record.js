@@ -16,6 +16,16 @@ const TABS = [
   { type: "body", name: "体重" }
 ];
 const PROJECTS = ["", "未运动", "篮球", "跑步", "居家健身", "户外徒步", "游泳", "骑行", "瑜伽", "其他"];
+const PROJECT_CHIPS = [
+  { name: "未运动", icon: "休" },
+  { name: "跑步", icon: "跑" },
+  { name: "居家健身", icon: "练" },
+  { name: "篮球", icon: "篮" },
+  { name: "户外徒步", icon: "徒" },
+  { name: "游泳", icon: "泳" },
+  { name: "骑行", icon: "骑" },
+  { name: "瑜伽", icon: "瑜" }
+];
 const DURATION_OPTIONS = Array.from({ length: 181 }).map((_, index) => `${index}分钟`);
 
 Page({
@@ -24,6 +34,7 @@ Page({
     tabs: TABS,
     date: "",
     projects: PROJECTS,
+    projectChips: PROJECT_CHIPS,
     projectIndex: 0,
     durationOptions: DURATION_OPTIONS,
     durationIndex: 44,
@@ -205,6 +216,22 @@ Page({
   onProjectChange(e) {
     const projectIndex = Number(e.detail.value);
     const project = PROJECTS[projectIndex];
+    const isNoExercise = !project || project === "未运动";
+    this.setData({
+      projectIndex,
+      "exerciseForm.project": project,
+      "exerciseForm.duration": isNoExercise ? 0 : (this.data.exerciseForm.duration || 30),
+      durationIndex: isNoExercise ? 0 : Math.max(0, Number(this.data.exerciseForm.duration || 30))
+    });
+  },
+
+  /**
+   * 点击运动类型卡片快速选择项目。
+   * @param {object} e 点击事件
+   */
+  onProjectChipTap(e) {
+    const project = e.currentTarget.dataset.project;
+    const projectIndex = PROJECTS.indexOf(project);
     const isNoExercise = !project || project === "未运动";
     this.setData({
       projectIndex,

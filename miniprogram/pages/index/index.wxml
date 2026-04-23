@@ -1,16 +1,45 @@
 <view class="page home-page">
-  <view class="hero">
-    <view>
-      <view class="date">{{dateText}}</view>
-      <view class="week">{{weekText}}</view>
+  <view class="hero card">
+    <view class="hero-top">
+      <view>
+        <view class="eyebrow">TODAY</view>
+        <view class="date">{{dateText}}</view>
+        <view class="week">{{weekText}}</view>
+      </view>
+      <view class="streak-pill">
+        <text class="streak-dot"></text>
+        <text>{{streak}}天</text>
+      </view>
     </view>
-    <view class="today-score">{{completedCount}}/4</view>
+
+    <view class="hero-center">
+      <view class="progress-ring {{ringClass}}">
+        <view class="ring-inner">
+          <view class="rate">{{completionRate}}%</view>
+          <view class="rate-label">今日完成率</view>
+        </view>
+      </view>
+      <view class="hero-copy">
+        <view class="hero-title">今日成长状态</view>
+        <view class="hero-desc">{{growthMessage}}</view>
+        <button class="primary-button quick-button" bindtap="onQuickRecord">记录今天</button>
+      </view>
+    </view>
   </view>
 
-  <view class="summary card">
-    <view class="summary-main">连续打卡</view>
-    <view class="streak">🔥 {{streak}}天</view>
-    <button class="primary-button quick-button" bindtap="onQuickRecord">今日记录</button>
+  <view class="trend-card card">
+    <view>
+      <view class="summary-main">本周趋势</view>
+      <view class="trend-title">完成 {{completedCount}} / 4 项</view>
+    </view>
+    <view class="trend-bars">
+      <view wx:for="{{weekTrend}}" wx:key="label" class="trend-item">
+        <view class="trend-track">
+          <view class="trend-fill" style="height: {{item.percent}}%"></view>
+        </view>
+        <text>{{item.label}}</text>
+      </view>
+    </view>
   </view>
 
   <view class="section-title">今日状态</view>

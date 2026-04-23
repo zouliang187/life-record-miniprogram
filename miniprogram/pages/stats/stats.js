@@ -100,7 +100,7 @@ Page({
       durationBars: stats.daily.map((item) => ({
         label: item.dayLabel,
         percent: Math.round((item.totalMinutes / maxMinutes) * 100),
-        color: "#1989fa",
+        color: "#5f9573",
         valueLabel: `${item.totalMinutes}分钟`
       })),
       chartWidth
@@ -127,12 +127,12 @@ Page({
       {
         title: stats.range === "month" ? "本月完成率" : "今日完成率",
         value: stats.range === "month" ? `${monthRate}%` : `${todayStats.completionRate}%`,
-        color: "#07c160"
+        color: "#5f9573"
       },
-      { title: "运动时长", value: `${moduleMap.exercise ? moduleMap.exercise.totalMinutes : 0}分钟`, color: "#ff6b6b" },
-      { title: "阅读时长", value: `${moduleMap.reading ? moduleMap.reading.totalMinutes : 0}分钟`, color: "#4ecdc4" },
-      { title: "学习时长", value: `${moduleMap.english ? moduleMap.english.totalMinutes : 0}分钟`, color: "#ffd93d" },
-      { title: "睡眠平均分", value: `${this.getAverageSleepScore(records, stats.dates)}分`, color: "#95e1d3" }
+      { title: "运动时长", value: `${moduleMap.exercise ? moduleMap.exercise.totalMinutes : 0}分钟`, color: "#df8f83" },
+      { title: "阅读时长", value: `${moduleMap.reading ? moduleMap.reading.totalMinutes : 0}分钟`, color: "#73aaa3" },
+      { title: "学习时长", value: `${moduleMap.english ? moduleMap.english.totalMinutes : 0}分钟`, color: "#d7b866" },
+      { title: "睡眠平均分", value: `${this.getAverageSleepScore(records, stats.dates)}分`, color: "#8aaed0" }
     ];
   },
 
@@ -192,7 +192,7 @@ Page({
       bodyBars: grouped.map((item) => ({
         label: item.label,
         percent: Math.max(8, Math.round(((item.weight - minWeight) / span) * 86 + 8)),
-        color: "#07c160",
+        color: "#78a88b",
         valueLabel: item.weight ? `${item.weight}kg` : ""
       })),
       bodyChartWidth: this.data.bodyRange === "year" ? "1280rpx" : "100%"

@@ -3,17 +3,33 @@ const { calculateBmi, formatDataForAI, getAIAdvice } = require("../../utils/calc
 const { enableShareMenu, getShareAppMessage, getShareTimeline } = require("../../utils/share");
 
 const GENDERS = ["男", "女", "其他"];
+const ROLES = [
+  "自我管理者",
+  "持续向上者",
+  "自由自在者",
+  "爱老婆者",
+  "运动达人",
+  "阅读进化者",
+  "睡眠修复师",
+  "生活策展人",
+  "能量积累者",
+  "温柔执行派",
+  "每日复利家",
+  "自定义角色"
+];
 const GOAL_META = [
-  { type: "exercise", title: "运动", color: "#ff6b6b", path: "profile.goals.exercise.targetDays" },
-  { type: "reading", title: "阅读", color: "#4ecdc4", path: "profile.goals.reading.targetDays" },
-  { type: "english", title: "英语", color: "#ffd93d", path: "profile.goals.english.targetDays" },
-  { type: "sleep", title: "睡眠", color: "#95e1d3", path: "profile.goals.sleep.targetDays" }
+  { type: "exercise", title: "运动", color: "#df8f83", path: "profile.goals.exercise.targetDays" },
+  { type: "reading", title: "阅读", color: "#73aaa3", path: "profile.goals.reading.targetDays" },
+  { type: "english", title: "英语", color: "#d7b866", path: "profile.goals.english.targetDays" },
+  { type: "sleep", title: "睡眠", color: "#8aaed0", path: "profile.goals.sleep.targetDays" }
 ];
 
 Page({
   data: {
     genders: GENDERS,
+    roles: ROLES,
     genderIndex: 0,
+    roleIndex: 0,
     profile: {},
     bmiInfo: {
       text: "待计算",
@@ -21,7 +37,8 @@ Page({
       rangeText: "国际标准 18-24"
     },
     goalCards: [],
-    exportPreview: ""
+    exportPreview: "",
+    managementScore: 0
   },
 
   /**
@@ -60,7 +77,8 @@ Page({
   loadProfile() {
     const profile = getUserProfile();
     const genderIndex = Math.max(0, GENDERS.indexOf(profile.userInfo.gender));
-    this.setData({ profile, genderIndex }, () => {
+    const roleIndex = Math.max(0, ROLES.indexOf(profile.userInfo.roleName || "自我管理者"));
+    this.setData({ profile, genderIndex, roleIndex }, () => {
       this.updateBmi();
       this.updateGoalCards();
     });
@@ -89,6 +107,35 @@ Page({
       "profile.userInfo.gender": GENDERS[genderIndex]
     }, () => {
       this.updateBmi();
+    });
+  },
+
+  /**
+   * 切换成长角色，支持自定义角色名称。
+   * @param {object} e picker 事件
+   */
+  onRoleChange(e) {
+    const roleIndex = Number(e.detail.value);
+    const roleName = ROLES[roleIndex];
+    if (roleName === "自定义角色") {
+      wx.showModal({
+        title: "自定义角色",
+        editable: true,
+        placeholderText: "例如：早起修炼者",
+        success: (res) => {
+          if (!res.confirm) return;
+          const customRole = (res.content || "").trim() || "自定义角色";
+          this.setData({
+            roleIndex,
+            "profile.userInfo.roleName": customRole
+          });
+        }
+      });
+      return;
+    }
+    this.setData({
+      roleIndex,
+      "profile.userInfo.roleName": roleName
     });
   },
 
@@ -159,7 +206,10 @@ Page({
         percent: Math.min(100, Math.round((completedDays / targetDays) * 100))
       };
     });
-    this.setData({ goalCards });
+    const managementScore = goalCards.length
+      ? Math.round(goalCards.reduce((sum, item) => sum + item.percent, 0) / goalCards.length)
+      : 0;
+    this.setData({ goalCards, managementScore });
   },
 
   /**

@@ -14,6 +14,8 @@ Page({
   data: {
     year: 0,
     month: 0,
+    years: [],
+    yearIndex: 0,
     selectedDate: "",
     calendar: [],
     filters: FILTERS,
@@ -27,9 +29,13 @@ Page({
    */
   onLoad() {
     const now = new Date();
+    const years = Array.from({ length: 21 }).map((_, index) => String(now.getFullYear() - 10 + index));
+    const yearIndex = years.indexOf(String(now.getFullYear()));
     this.setData({
       year: now.getFullYear(),
       month: now.getMonth() + 1,
+      years,
+      yearIndex,
       selectedDate: formatDate()
     });
     this.refreshHistory();
@@ -92,7 +98,19 @@ Page({
       year += 1;
       month = 1;
     }
-    this.setData({ year, month });
+    const yearIndex = this.data.years.indexOf(String(year));
+    this.setData({ year, month, yearIndex: Math.max(0, yearIndex) });
+    this.refreshHistory();
+  },
+
+  /**
+   * 切换年份。
+   * @param {object} e picker 事件
+   */
+  onYearChange(e) {
+    const yearIndex = Number(e.detail.value);
+    const year = Number(this.data.years[yearIndex]);
+    this.setData({ year, yearIndex });
     this.refreshHistory();
   },
 

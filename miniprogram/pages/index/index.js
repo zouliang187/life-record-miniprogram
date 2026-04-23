@@ -1,13 +1,13 @@
 const { formatDate, getDisplayDate } = require("../../utils/date");
 const { enableShareMenu, getShareAppMessage, getShareTimeline } = require("../../utils/share");
 const { getAllRecords, getRecordsByDate } = require("../../utils/storage");
-const { MODULES, calculateOverallStreak } = require("../../utils/calculator");
+const { MODULES, calculateOverallStreak, buildStats } = require("../../utils/calculator");
 
 const MODULE_META = {
-  exercise: { title: "运动", icon: "动", color: "#ff6b6b" },
-  reading: { title: "阅读", icon: "读", color: "#4ecdc4" },
-  sleep: { title: "睡眠", icon: "睡", color: "#95e1d3" },
-  english: { title: "英语", icon: "英", color: "#ffd93d" }
+  exercise: { title: "运动", icon: "动", color: "#df8f83" },
+  reading: { title: "阅读", icon: "读", color: "#73aaa3" },
+  sleep: { title: "睡眠", icon: "睡", color: "#8aaed0" },
+  english: { title: "英语", icon: "英", color: "#d7b866" }
 };
 
 Page({
@@ -17,7 +17,11 @@ Page({
     weekText: "",
     cards: [],
     streak: 0,
-    completedCount: 0
+    completedCount: 0,
+    completionRate: 0,
+    ringClass: "ring-0",
+    growthMessage: "今天先完成一个小动作，系统就开始向前滚动。",
+    weekTrend: []
   },
 
   /**
@@ -66,6 +70,9 @@ Page({
           detailText: this.getRecordSummary(module.type, record)
         };
       });
+      const completedCount = cards.filter((item) => item.completed).length;
+      const completionRate = completedCount * 25;
+      const weekStats = buildStats(allRecords, "week");
 
       this.setData({
         today,
@@ -73,7 +80,14 @@ Page({
         weekText: display.weekText,
         cards,
         streak: calculateOverallStreak(allRecords, today),
-        completedCount: todayRecords.length
+        completedCount,
+        completionRate,
+        ringClass: `ring-${completedCount}`,
+        growthMessage: this.getGrowthMessage(completedCount),
+        weekTrend: weekStats.daily.map((item) => ({
+          label: item.dayLabel,
+          percent: item.completionRate
+        }))
       });
     } catch (error) {
       console.error("首页数据加载失败", error);
@@ -93,9 +107,26 @@ Page({
           detailText: "点击快速打卡"
         })),
         streak: 0,
-        completedCount: 0
+        completedCount: 0,
+        completionRate: 0,
+        ringClass: "ring-0",
+        growthMessage: "今天先完成一个小动作，系统就开始向前滚动。",
+        weekTrend: []
       });
     }
+  },
+
+  /**
+   * 根据今日完成数量生成克制的成长提醒。
+   * @param {number} completedCount 今日完成模块数
+   * @returns {string} 首页提醒文案
+   */
+  getGrowthMessage(completedCount) {
+    if (completedCount >= 4) return "四项都已完成，今天的自我管理很完整。";
+    if (completedCount >= 3) return "只差一步，今天已经很接近满分状态。";
+    if (completedCount >= 2) return "节奏已经起来了，再补一项会更稳。";
+    if (completedCount >= 1) return "一个记录已经启动，继续保持轻量推进。";
+    return "今天先完成一个小动作，系统就开始向前滚动。";
   },
 
   /**

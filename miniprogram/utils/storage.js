@@ -107,6 +107,7 @@ function getUserProfile() {
     userInfo: {
       nickname: "",
       avatarUrl: "",
+      roleName: "自我管理者",
       height: "",
       weight: "",
       bmi: "",
@@ -135,6 +136,7 @@ function normalizeProfile(profile) {
     userInfo: {
       nickname: userInfo.nickname || "",
       avatarUrl: userInfo.avatarUrl || "",
+      roleName: userInfo.roleName || "自我管理者",
       height: userInfo.height || "",
       weight: userInfo.weight || "",
       bmi: userInfo.bmi || "",

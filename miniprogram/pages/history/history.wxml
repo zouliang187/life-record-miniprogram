@@ -1,9 +1,20 @@
 <view class="page history-page">
   <view class="calendar-card card">
     <view class="month-header">
-      <button class="ghost-button month-btn" data-offset="-1" bindtap="onMonthShift">上月</button>
-      <view>{{year}}年{{month}}月</view>
-      <button class="ghost-button month-btn" data-offset="1" bindtap="onMonthShift">下月</button>
+      <view class="month-title">
+        <picker mode="selector" range="{{years}}" value="{{yearIndex}}" bindchange="onYearChange">
+          <text class="year-text">{{year}}年</text>
+        </picker>
+        <view class="month-line">
+          <button class="ghost-button month-btn prev-btn" data-offset="-1" bindtap="onMonthShift">
+            <text>上月</text><text>‹</text>
+          </button>
+          <text class="month-text">{{month}}月</text>
+          <button class="ghost-button month-btn next-btn" data-offset="1" bindtap="onMonthShift">
+            <text>›</text><text>下月</text>
+          </button>
+        </view>
+      </view>
     </view>
     <view class="week-row">
       <text>日</text><text>一</text><text>二</text><text>三</text><text>四</text><text>五</text><text>六</text>

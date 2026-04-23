@@ -14,19 +14,27 @@
   </view>
 
   <view wx:if="{{activeType === 'exercise'}}" class="card form-card">
-    <view class="section-title">运动记录</view>
     <view class="field">
-      <text class="label">运动项目</text>
-      <picker mode="selector" range="{{projects}}" value="{{projectIndex}}" bindchange="onProjectChange">
-        <view class="picker-value">{{exerciseForm.project || '未选择'}}</view>
-      </picker>
+      <text class="record-title centered-title">运动项目</text>
+      <view class="sport-grid">
+        <view
+          wx:for="{{projectChips}}"
+          wx:key="name"
+          class="sport-chip {{exerciseForm.project === item.name ? 'active' : ''}}"
+          data-project="{{item.name}}"
+          bindtap="onProjectChipTap"
+        >
+          <view class="sport-icon">{{item.icon}}</view>
+          <text>{{item.name}}</text>
+        </view>
+      </view>
     </view>
     <view wx:if="{{exerciseForm.project === '其他'}}" class="field">
       <text class="label">自定义项目</text>
       <input class="input" value="{{exerciseForm.customProject}}" data-path="exerciseForm.customProject" bindinput="onInput" placeholder="例如：羽毛球" />
     </view>
-    <view class="field">
-      <text class="label">运动时长：{{exerciseForm.duration}}分钟</text>
+    <view class="duration-row field">
+      <text class="record-subtitle">运动时长</text>
       <picker mode="selector" range="{{durationOptions}}" value="{{durationIndex}}" bindchange="onDurationChange">
         <view class="picker-value duration-picker">{{exerciseForm.duration || 0}}分钟</view>
       </picker>
@@ -61,7 +69,7 @@
   </view>
 
   <view wx:if="{{activeType === 'reading'}}" class="card form-card">
-    <view class="section-title">阅读记录</view>
+    <view class="record-title">阅读记录</view>
     <view class="form-row">
       <text>书籍名称</text>
       <input value="{{readingForm.bookName}}" data-path="readingForm.bookName" bindinput="onInput" placeholder="请输入" />
@@ -85,18 +93,30 @@
   </view>
 
   <view wx:if="{{activeType === 'sleep'}}" class="card form-card">
-    <view class="section-title">睡眠记录</view>
-    <view class="field">
-      <text class="label">入睡时间</text>
-      <picker mode="time" value="{{sleepForm.bedTime}}" data-path="sleepForm.bedTime" bindchange="onInput">
-        <view class="picker-value">{{sleepForm.bedTime}}</view>
-      </picker>
+    <view class="record-title">睡眠记录</view>
+    <view class="sleep-hero">
+      <view>
+        <view class="sleep-label">昨晚睡眠</view>
+        <view class="sleep-duration">{{sleepDurationText}}</view>
+      </view>
+      <view class="sleep-score">
+        <text>{{sleepForm.watchScore || '--'}}</text>
+        <text>手表分</text>
+      </view>
     </view>
-    <view class="field">
-      <text class="label">起床时间</text>
-      <picker mode="time" value="{{sleepForm.wakeTime}}" data-path="sleepForm.wakeTime" bindchange="onInput">
-        <view class="picker-value">{{sleepForm.wakeTime}}</view>
-      </picker>
+    <view class="time-grid">
+      <view class="field">
+        <text class="label">入睡时间</text>
+        <picker mode="time" value="{{sleepForm.bedTime}}" data-path="sleepForm.bedTime" bindchange="onInput">
+          <view class="picker-value">{{sleepForm.bedTime}}</view>
+        </picker>
+      </view>
+      <view class="field">
+        <text class="label">起床时间</text>
+        <picker mode="time" value="{{sleepForm.wakeTime}}" data-path="sleepForm.wakeTime" bindchange="onInput">
+          <view class="picker-value">{{sleepForm.wakeTime}}</view>
+        </picker>
+      </view>
     </view>
     <view class="duration-box">睡眠时长：{{sleepDurationText}}</view>
     <view class="field">
@@ -119,7 +139,7 @@
   <view wx:if="{{activeType === 'english'}}" class="card form-card">
     <view class="section-title">英语学习记录</view>
     <view class="english-row">
-      <checkbox checked="{{englishForm.dailyCompleted}}" color="#07c160" data-path="englishForm.dailyCompleted" bindtap="onCheckboxTap" />
+      <checkbox checked="{{englishForm.dailyCompleted}}" color="#6f927d" data-path="englishForm.dailyCompleted" bindtap="onCheckboxTap" />
       <text>多邻国</text>
       <input type="number" value="{{englishForm.dailyDuration}}" data-path="englishForm.dailyDuration" bindinput="onInput" />
     </view>

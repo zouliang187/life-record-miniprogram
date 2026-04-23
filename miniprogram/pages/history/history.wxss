@@ -7,17 +7,65 @@
 .month-header {
   align-items: center;
   display: flex;
-  font-size: 32rpx;
-  font-weight: 700;
-  justify-content: space-between;
-  margin-bottom: 20rpx;
+  justify-content: center;
+  margin-bottom: 26rpx;
 }
 
 .month-btn {
+  align-items: center;
+  display: flex;
   font-size: 24rpx;
-  line-height: 2.2;
+  font-weight: 800;
+  gap: 4rpx;
+  height: 72rpx;
+  justify-content: center;
+  line-height: 1;
   margin: 0;
-  width: 128rpx;
+  padding: 0;
+  width: 94rpx;
+}
+
+.month-btn text:first-child,
+.month-btn text:last-child {
+  white-space: nowrap;
+}
+
+.prev-btn text:last-child,
+.next-btn text:first-child {
+  font-size: 36rpx;
+  line-height: 1;
+}
+
+.month-title {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.year-text {
+  color: #26312b;
+  font-size: 32rpx;
+  font-weight: 900;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.month-line {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 8rpx;
+  width: 100%;
+}
+
+.month-text {
+  color: #4f735f;
+  font-size: 34rpx;
+  font-weight: 900;
+  margin: 0 16rpx;
+  min-width: 88rpx;
+  text-align: center;
 }
 
 .week-row,
@@ -28,14 +76,14 @@
 }
 
 .week-row {
-  color: #7a8190;
+  color: #8d9a92;
   font-size: 24rpx;
   margin-bottom: 10rpx;
 }
 
 .day {
   align-items: center;
-  border-radius: 8rpx;
+  border-radius: 16rpx;
   display: flex;
   height: 72rpx;
   justify-content: center;
@@ -47,12 +95,12 @@
 }
 
 .day.has-record {
-  background: #e9f8ef;
-  color: #07c160;
+  background: #f1f3ef;
+  color: #5f9573;
 }
 
 .day.selected {
-  background: #07c160;
+  background: linear-gradient(135deg, #78a88b 0%, #b7d7c1 100%);
   color: #ffffff;
   font-weight: 700;
 }
@@ -77,15 +125,16 @@
 
 .filter {
   background: #ffffff;
-  border-radius: 8rpx;
-  color: #7a8190;
+  border-radius: 16rpx;
+  border: 1rpx solid rgba(105, 126, 113, 0.1);
+  color: #8f96a3;
   flex-shrink: 0;
   padding: 14rpx 24rpx;
 }
 
 .filter.active {
-  background: #07c160;
-  color: #ffffff;
+  background: #eef7f1;
+  color: #5f9573;
 }
 
 .list-item {
@@ -98,7 +147,7 @@
 }
 
 .list-title {
-  color: #1f2430;
+  color: #26312b;
   font-weight: 700;
   margin-bottom: 8rpx;
 }

@@ -4,7 +4,7 @@
     <view wx:for="{{bars}}" wx:key="label" class="bar-item">
       <view class="bar-value">{{item.valueLabel || ''}}</view>
       <view class="bar-track">
-        <view class="bar-fill" style="height: {{item.percent}}%; background: {{item.color || '#07c160'}}"></view>
+        <view class="bar-fill" style="height: {{item.percent}}%; background: {{item.color || '#78a88b'}}"></view>
       </view>
       <text>{{item.label}}</text>
     </view>
