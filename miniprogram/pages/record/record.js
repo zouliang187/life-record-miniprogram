@@ -1,6 +1,6 @@
 const { formatDate } = require("../../utils/date");
 const { enableShareMenu, getShareAppMessage, getShareTimeline } = require("../../utils/share");
-const { deleteRecord, getAllRecords, getBodyMetricByDate, getRecordByType, saveBodyMetric, saveRecord } = require("../../utils/storage");
+const { deleteRecord, getAllRecords, getBodyMetricByDate, getBodyMetrics, getRecordByType, saveBodyMetric, saveRecord } = require("../../utils/storage");
 const {
   calculateBmi,
   calculateModuleStreak,
@@ -547,7 +547,7 @@ Page({
    * 回填身体指标表单。
    */
   fillBody() {
-    const metric = getBodyMetricByDate(this.data.date);
+    const metric = getBodyMetricByDate(this.data.date) || getBodyMetrics()[0];
     if (!metric) return;
     this.setData({
       bodyForm: {
