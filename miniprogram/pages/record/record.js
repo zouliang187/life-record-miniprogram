@@ -1,4 +1,5 @@
 const { formatDate } = require("../../utils/date");
+const { enableShareMenu, getShareAppMessage, getShareTimeline } = require("../../utils/share");
 const { deleteRecord, getAllRecords, getRecordByType, saveRecord } = require("../../utils/storage");
 const {
   calculateModuleStreak,
@@ -45,6 +46,7 @@ Page({
    * 页面展示时读取首页传入的目标 tab。
    */
   onShow() {
+    enableShareMenu();
     const activeType = wx.getStorageSync("recordActiveType");
     if (activeType) {
       wx.removeStorageSync("recordActiveType");
@@ -52,6 +54,22 @@ Page({
       return;
     }
     this.loadExistingRecord();
+  },
+
+  /**
+   * 允许用户转发给朋友。
+   * @returns {object} 分享内容
+   */
+  onShareAppMessage() {
+    return getShareAppMessage();
+  },
+
+  /**
+   * 允许用户分享到朋友圈。
+   * @returns {object} 朋友圈分享内容
+   */
+  onShareTimeline() {
+    return getShareTimeline();
   },
 
   /**

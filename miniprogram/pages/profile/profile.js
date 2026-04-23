@@ -1,5 +1,6 @@
 const { getAllRecords, getUserProfile, saveUserProfile } = require("../../utils/storage");
 const { calculateBmi, formatDataForAI, getAIAdvice } = require("../../utils/calculator");
+const { enableShareMenu, getShareAppMessage, getShareTimeline } = require("../../utils/share");
 
 const GENDERS = ["男", "女", "其他"];
 const GOAL_META = [
@@ -28,6 +29,29 @@ Page({
    */
   onLoad() {
     this.loadProfile();
+  },
+
+  /**
+   * 页面展示时打开分享入口。
+   */
+  onShow() {
+    enableShareMenu();
+  },
+
+  /**
+   * 允许用户转发给朋友。
+   * @returns {object} 分享内容
+   */
+  onShareAppMessage() {
+    return getShareAppMessage();
+  },
+
+  /**
+   * 允许用户分享到朋友圈。
+   * @returns {object} 朋友圈分享内容
+   */
+  onShareTimeline() {
+    return getShareTimeline();
   },
 
   /**

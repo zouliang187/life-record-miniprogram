@@ -1,4 +1,5 @@
 const { formatDate } = require("../../utils/date");
+const { enableShareMenu, getShareAppMessage, getShareTimeline } = require("../../utils/share");
 const { getAllRecords } = require("../../utils/storage");
 const { buildStats } = require("../../utils/calculator");
 
@@ -20,7 +21,24 @@ Page({
    * 页面展示时刷新统计数据。
    */
   onShow() {
+    enableShareMenu();
     this.refreshStats();
+  },
+
+  /**
+   * 允许用户转发给朋友。
+   * @returns {object} 分享内容
+   */
+  onShareAppMessage() {
+    return getShareAppMessage();
+  },
+
+  /**
+   * 允许用户分享到朋友圈。
+   * @returns {object} 朋友圈分享内容
+   */
+  onShareTimeline() {
+    return getShareTimeline();
   },
 
   /**
