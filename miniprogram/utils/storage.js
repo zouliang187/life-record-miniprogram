@@ -2,6 +2,7 @@ const { formatDate } = require("./date");
 
 const PROFILE_KEY = "userProfile";
 const SETTINGS_KEY = "appSettings";
+const BODY_METRICS_KEY = "bodyMetrics";
 const TYPE_ORDER = ["exercise", "reading", "sleep", "english"];
 
 /**
@@ -178,6 +179,43 @@ function getSettings() {
   return wx.getStorageSync(SETTINGS_KEY) || { theme: "light", notifications: true };
 }
 
+/**
+ * 读取全部身体指标记录。
+ * @returns {Array<object>} 身体指标记录
+ */
+function getBodyMetrics() {
+  return getArrayStorage(BODY_METRICS_KEY).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+}
+
+/**
+ * 读取指定日期的身体指标记录。
+ * @param {string} date 日期字符串
+ * @returns {object|null} 身体指标
+ */
+function getBodyMetricByDate(date) {
+  return getBodyMetrics().find((record) => record.date === date) || null;
+}
+
+/**
+ * 保存身体指标，同一天只保留最新一条。
+ * @param {object} metric 身体指标
+ * @returns {object} 保存后的记录
+ */
+function saveBodyMetric(metric) {
+  const date = metric.date || formatDate();
+  const metrics = getBodyMetrics().filter((item) => item.date !== date);
+  const normalized = {
+    ...metric,
+    type: "body",
+    date,
+    timestamp: metric.timestamp || Date.now(),
+    updatedAt: Date.now()
+  };
+  metrics.push(normalized);
+  wx.setStorageSync(BODY_METRICS_KEY, metrics);
+  return normalized;
+}
+
 module.exports = {
   deleteRecord,
   getAllRecords,
@@ -186,6 +224,9 @@ module.exports = {
   getRecordsByYear,
   getSettings,
   getUserProfile,
+  getBodyMetricByDate,
+  getBodyMetrics,
+  saveBodyMetric,
   saveRecord,
   saveUserProfile
 };

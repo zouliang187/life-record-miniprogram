@@ -127,5 +127,38 @@
     <textarea class="textarea" value="{{englishForm.note}}" data-path="englishForm.note" bindinput="onInput" placeholder="学习内容（可选）" />
   </view>
 
+  <view wx:if="{{activeType === 'body'}}" class="card form-card">
+    <view class="section-title">体重记录</view>
+    <view class="form-row">
+      <text>身高（cm）</text>
+      <input type="digit" value="{{bodyForm.height}}" data-path="bodyForm.height" bindinput="onInput" placeholder="0" />
+    </view>
+    <view class="form-row">
+      <text>体重（kg）</text>
+      <input type="digit" value="{{bodyForm.weight}}" data-path="bodyForm.weight" bindinput="onInput" placeholder="0" />
+    </view>
+    <view class="duration-box">BMI：{{bodyForm.bmi || '待计算'}}</view>
+    <view class="form-row">
+      <text>体脂率（%）</text>
+      <input type="digit" value="{{bodyForm.bodyFatRate}}" data-path="bodyForm.bodyFatRate" bindinput="onInput" placeholder="0" />
+    </view>
+    <view class="form-row">
+      <text>腰围（cm）</text>
+      <input type="digit" value="{{bodyForm.waist}}" data-path="bodyForm.waist" bindinput="onInput" placeholder="0" />
+    </view>
+    <view class="form-row">
+      <text>胸围（cm）</text>
+      <input type="digit" value="{{bodyForm.chest}}" data-path="bodyForm.chest" bindinput="onInput" placeholder="0" />
+    </view>
+    <view class="form-row">
+      <text>臀围（cm）</text>
+      <input type="digit" value="{{bodyForm.hip}}" data-path="bodyForm.hip" bindinput="onInput" placeholder="0" />
+    </view>
+    <view class="note-field">
+      <text>备注</text>
+      <textarea class="textarea" value="{{bodyForm.note}}" data-path="bodyForm.note" bindinput="onInput" placeholder="可选" />
+    </view>
+  </view>
+
   <button class="primary-button submit-button" bindtap="onSubmit">保存记录</button>
 </view>

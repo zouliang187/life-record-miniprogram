@@ -55,4 +55,25 @@
       </scroll-view>
     </view>
   </block>
+
+  <view class="body-card">
+    <view class="body-card-head">
+      <view>
+        <view class="body-title">体重趋势</view>
+        <view class="muted">最近记录：{{latestBodyText}}</view>
+      </view>
+      <view class="body-range-tabs">
+        <view
+          wx:for="{{bodyRanges}}"
+          wx:key="key"
+          class="body-range-tab {{bodyRange === item.key ? 'active' : ''}}"
+          data-range="{{item.key}}"
+          bindtap="onBodyRangeTap"
+        >{{item.name}}</view>
+      </view>
+    </view>
+    <scroll-view scroll-x class="chart-scroll" enhanced show-scrollbar="{{false}}">
+      <stat-chart title="" bars="{{bodyBars}}" width="{{bodyChartWidth}}" />
+    </scroll-view>
+  </view>
 </view>

@@ -1,9 +1,14 @@
 const { formatDate } = require("../../utils/date");
 const { enableShareMenu, getShareAppMessage, getShareTimeline } = require("../../utils/share");
-const { getAllRecords } = require("../../utils/storage");
+const { getAllRecords, getBodyMetrics } = require("../../utils/storage");
 const { buildStats } = require("../../utils/calculator");
 
 const WEEK_LABELS = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
+const BODY_RANGES = [
+  { key: "week", name: "本周" },
+  { key: "month", name: "本月" },
+  { key: "year", name: "本年" }
+];
 
 Page({
   data: {
@@ -13,6 +18,12 @@ Page({
     calendarCells: [],
     completionBars: [],
     durationBars: [],
+    bodyRanges: BODY_RANGES,
+    bodyRange: "week",
+    bodyBars: [],
+    bodyChartWidth: "100%",
+    latestBodyMetric: null,
+    latestBodyText: "暂无",
     overviewCards: [],
     chartWidth: "100%"
   },
@@ -53,6 +64,17 @@ Page({
   },
 
   /**
+   * 切换体重趋势周期。
+   * @param {object} e 点击事件
+   */
+  onBodyRangeTap(e) {
+    this.setData({
+      bodyRange: e.currentTarget.dataset.range
+    });
+    this.refreshBodyStats();
+  },
+
+  /**
    * 读取本地记录并构造图表数据。
    */
   refreshStats() {
@@ -83,6 +105,7 @@ Page({
       })),
       chartWidth
     });
+    this.refreshBodyStats();
   },
 
   /**
@@ -152,5 +175,123 @@ Page({
       isBlank: true
     }));
     return blanks.concat(daily);
+  },
+
+  /**
+   * 刷新体重趋势统计。
+   */
+  refreshBodyStats() {
+    const metrics = getBodyMetrics();
+    const grouped = this.buildBodySeries(metrics, this.data.bodyRange);
+    const maxWeight = Math.max.apply(null, grouped.map((item) => item.weight).concat([1]));
+    const minWeight = Math.min.apply(null, grouped.map((item) => item.weight).concat([maxWeight]));
+    const span = Math.max(1, maxWeight - minWeight);
+    this.setData({
+      latestBodyMetric: metrics[0] || null,
+      latestBodyText: metrics[0] ? `${metrics[0].weight}kg / BMI ${metrics[0].bmi || "待计算"}` : "暂无",
+      bodyBars: grouped.map((item) => ({
+        label: item.label,
+        percent: Math.max(8, Math.round(((item.weight - minWeight) / span) * 86 + 8)),
+        color: "#07c160",
+        valueLabel: item.weight ? `${item.weight}kg` : ""
+      })),
+      bodyChartWidth: this.data.bodyRange === "year" ? "1280rpx" : "100%"
+    });
+  },
+
+  /**
+   * 根据周期生成体重趋势序列。
+   * @param {Array<object>} metrics 身体指标记录
+   * @param {string} range week/month/year
+   * @returns {Array<object>} 图表序列
+   */
+  buildBodySeries(metrics, range) {
+    if (range === "week") return this.buildWeeklyWeightSeries(metrics);
+    if (range === "month") return this.buildMonthlyWeekWeightSeries(metrics);
+    return this.buildYearlyWeightSeries(metrics);
+  },
+
+  /**
+   * 本周按天展示体重。
+   * @param {Array<object>} metrics 身体指标记录
+   * @returns {Array<object>} 本周序列
+   */
+  buildWeeklyWeightSeries(metrics) {
+    const today = new Date();
+    const monday = new Date(today);
+    const day = today.getDay() || 7;
+    monday.setDate(today.getDate() - day + 1);
+    return WEEK_LABELS.map((label, index) => {
+      const date = new Date(monday);
+      date.setDate(monday.getDate() + index);
+      const dateText = this.formatLocalDate(date);
+      const metric = metrics.find((item) => item.date === dateText);
+      return { label, weight: metric ? Number(metric.weight || 0) : 0 };
+    });
+  },
+
+  /**
+   * 本月按周平均展示体重。
+   * @param {Array<object>} metrics 身体指标记录
+   * @returns {Array<object>} 本月周均序列
+   */
+  buildMonthlyWeekWeightSeries(metrics) {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    const weeks = [1, 2, 3, 4, 5].map((week) => ({ label: `第${week}周`, values: [] }));
+    metrics
+      .filter((item) => item.date && item.date.indexOf(`${year}-${String(month).padStart(2, "0")}`) === 0)
+      .forEach((item) => {
+        const day = Number(item.date.slice(8));
+        const weekIndex = Math.min(4, Math.floor((day - 1) / 7));
+        weeks[weekIndex].values.push(Number(item.weight || 0));
+      });
+    return weeks.map((week) => ({
+      label: week.label,
+      weight: this.average(week.values)
+    }));
+  },
+
+  /**
+   * 本年按月平均展示体重。
+   * @param {Array<object>} metrics 身体指标记录
+   * @returns {Array<object>} 本年月均序列
+   */
+  buildYearlyWeightSeries(metrics) {
+    const year = new Date().getFullYear();
+    return Array.from({ length: 12 }).map((_, index) => {
+      const month = String(index + 1).padStart(2, "0");
+      const values = metrics
+        .filter((item) => item.date && item.date.indexOf(`${year}-${month}`) === 0)
+        .map((item) => Number(item.weight || 0));
+      return {
+        label: `${index + 1}月`,
+        weight: this.average(values)
+      };
+    });
+  },
+
+  /**
+   * 计算平均值。
+   * @param {Array<number>} values 数值数组
+   * @returns {number} 平均值
+   */
+  average(values) {
+    const validValues = values.filter((value) => value > 0);
+    if (!validValues.length) return 0;
+    return Number((validValues.reduce((sum, value) => sum + value, 0) / validValues.length).toFixed(1));
+  },
+
+  /**
+   * 格式化本地日期。
+   * @param {Date} date 日期对象
+   * @returns {string} YYYY-MM-DD
+   */
+  formatLocalDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   }
 });

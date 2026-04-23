@@ -1,7 +1,8 @@
 const { formatDate } = require("../../utils/date");
 const { enableShareMenu, getShareAppMessage, getShareTimeline } = require("../../utils/share");
-const { deleteRecord, getAllRecords, getRecordByType, saveRecord } = require("../../utils/storage");
+const { deleteRecord, getAllRecords, getBodyMetricByDate, getRecordByType, saveBodyMetric, saveRecord } = require("../../utils/storage");
 const {
+  calculateBmi,
   calculateModuleStreak,
   calculateSleepDuration,
   estimateCalories
@@ -11,7 +12,8 @@ const TABS = [
   { type: "exercise", name: "运动" },
   { type: "reading", name: "阅读" },
   { type: "sleep", name: "睡眠" },
-  { type: "english", name: "英语" }
+  { type: "english", name: "英语" },
+  { type: "body", name: "体重" }
 ];
 const PROJECTS = ["", "未运动", "篮球", "跑步", "居家健身", "户外徒步", "游泳", "骑行", "瑜伽", "其他"];
 const DURATION_OPTIONS = Array.from({ length: 181 }).map((_, index) => `${index}分钟`);
@@ -29,6 +31,7 @@ Page({
     readingForm: {},
     sleepForm: {},
     englishForm: {},
+    bodyForm: {},
     stars: [1, 2, 3, 4, 5],
     sleepDurationText: "8.0小时",
     englishTotalDuration: 0
@@ -108,6 +111,16 @@ Page({
         dailyCompleted: true,
         dailyDuration: 15,
         note: ""
+      },
+      bodyForm: {
+        height: "",
+        weight: "",
+        bmi: "",
+        bodyFatRate: "",
+        waist: "",
+        chest: "",
+        hip: "",
+        note: ""
       }
     }, () => {
       this.updateSleepDuration();
@@ -120,12 +133,17 @@ Page({
    * 读取当前日期当前模块已有记录并回填表单。
    */
   loadExistingRecord() {
+    if (this.data.activeType === "body") {
+      this.fillBody();
+      return;
+    }
     const record = getRecordByType(this.data.date, this.data.activeType);
     if (!record) return;
     if (record.type === "exercise") this.fillExercise(record);
     if (record.type === "reading") this.fillReading(record);
     if (record.type === "sleep") this.fillSleep(record);
     if (record.type === "english") this.fillEnglish(record);
+    if (this.data.activeType === "body") this.fillBody();
   },
 
   /**
@@ -155,6 +173,7 @@ Page({
     this.setData({ [path]: e.detail.value }, () => {
       if (path.indexOf("sleepForm") === 0) this.updateSleepDuration();
       if (path.indexOf("englishForm") === 0) this.updateEnglishTotal();
+      if (path === "bodyForm.height" || path === "bodyForm.weight") this.updateBodyBmi();
     });
   },
 
@@ -270,6 +289,12 @@ Page({
       records.push(this.buildEnglishRecord());
     }
 
+    if (this.hasBodyInput()) {
+      const bodyRecord = this.buildBodyMetric();
+      if (!bodyRecord) return null;
+      saveBodyMetric(bodyRecord);
+    }
+
     return records;
   },
 
@@ -293,6 +318,15 @@ Page({
       form.dailyDuration ||
       form.note
     );
+  },
+
+  /**
+   * 判断身体指标是否有填写内容。
+   * @returns {boolean} 是否填写
+   */
+  hasBodyInput() {
+    const form = this.data.bodyForm;
+    return !!(form.height || form.weight || form.bodyFatRate || form.waist || form.chest || form.hip || form.note);
   },
 
   /**
@@ -406,6 +440,27 @@ Page({
   },
 
   /**
+   * 构造身体指标记录。
+   * @returns {object|null} 身体指标
+   */
+  buildBodyMetric() {
+    const form = this.data.bodyForm;
+    if (!Number(form.weight)) return this.showInvalid("请填写体重");
+    return {
+      date: this.data.date,
+      timestamp: Date.now(),
+      height: Number(form.height || 0),
+      weight: Number(form.weight || 0),
+      bmi: calculateBmi(form.height, form.weight),
+      bodyFatRate: Number(form.bodyFatRate || 0),
+      waist: Number(form.waist || 0),
+      chest: Number(form.chest || 0),
+      hip: Number(form.hip || 0),
+      note: form.note || ""
+    };
+  },
+
+  /**
    * 回填运动表单。
    * @param {object} record 运动记录
    */
@@ -486,6 +541,36 @@ Page({
       }
     });
     this.updateEnglishTotal();
+  },
+
+  /**
+   * 回填身体指标表单。
+   */
+  fillBody() {
+    const metric = getBodyMetricByDate(this.data.date);
+    if (!metric) return;
+    this.setData({
+      bodyForm: {
+        height: metric.height || "",
+        weight: metric.weight || "",
+        bmi: metric.bmi || "",
+        bodyFatRate: metric.bodyFatRate || "",
+        waist: metric.waist || "",
+        chest: metric.chest || "",
+        hip: metric.hip || "",
+        note: metric.note || ""
+      }
+    });
+  },
+
+  /**
+   * 自动更新身体指标中的 BMI。
+   */
+  updateBodyBmi() {
+    const form = this.data.bodyForm;
+    this.setData({
+      "bodyForm.bmi": calculateBmi(form.height, form.weight)
+    });
   },
 
   /**
